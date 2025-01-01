@@ -28,7 +28,7 @@ enum Commands {
     Publish {
         ///manifest.toml
         #[clap(long)]
-        minifest: PathBuf,
+        manifest: PathBuf,
 
         ///file/files to publish
         #[clap(long)]
@@ -38,7 +38,11 @@ enum Commands {
 
 fn main() {
     let args = Args::parse();
-  
-    publish::publish();
-    install::install();
+     
+    match &args.cmd {
+        Commands::Install { package } => {
+            install::install(package)
+        },
+        Commands::Publish { manifest, files } => {}
+    }
 }
