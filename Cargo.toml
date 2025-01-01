@@ -1,6 +1,9 @@
 [package]
 name = "gpm"
+about = "gpm (generic package manager) is the internal package management tool for the Generic Cursed Development team"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+clap = { version = "4.5.23", features = ["derive"] }
+
