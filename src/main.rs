@@ -1,4 +1,8 @@
+mod lib;
+mod publish;
+mod install;
 use clap::{Parser, Subcommand};
+use std::path::PathBuf;
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -18,11 +22,23 @@ enum Commands {
         ///name of package to install, defults to latest release, to specify
         ///version add @V:[version] after package name, e.g. `locate_zahirs_dad@V:[1.0.1]`
         package: String
+    },
+    
+    ///publish a package to gpm
+    Publish {
+        ///manifest.toml
+        #[clap(long)]
+        minifest: PathBuf,
+
+        ///file/files to publish
+        #[clap(long)]
+        files: PathBuf,
     }
 }
 
 fn main() {
     let args = Args::parse();
   
-    println!("{:?}", args);
+    publish::publish();
+    install::install();
 }
