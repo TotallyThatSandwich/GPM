@@ -1,11 +1,15 @@
-pub fn parse_package_input(input: &String) -> (String, String){
-    let mut packageVersion = "";
-    let mut packageName = "";
+pub fn parse_package_input(input: &str) -> (String, String) {
+    let package_version;
+    let package_name;
     if input.contains("@V") {
-        [packageName, packageVersion] = input.split("@V").collect::<Vec<&str>>().try_into().unwrap_or_default();
+        [package_name, package_version] = input
+            .split("@V")
+            .collect::<Vec<&str>>()
+            .try_into()
+            .unwrap_or_default();
     } else {
-        packageName = input;
-        packageVersion = "latest";
+        package_name = input;
+        package_version = "latest";
     }
-    return (packageName.to_string(), packageVersion.to_string())
+    (package_name.to_string(), package_version.to_string())
 }

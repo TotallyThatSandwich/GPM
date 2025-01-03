@@ -1,6 +1,6 @@
+mod install;
 mod lib;
 mod publish;
-mod install;
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 
@@ -10,9 +10,9 @@ use std::path::PathBuf;
 struct Args {
     #[arg(short, long)]
     verbose: bool,
-    
+
     #[command(subcommand)]
-    cmd: Commands
+    cmd: Commands,
 }
 
 #[derive(Subcommand, Debug, Clone)]
@@ -21,9 +21,12 @@ enum Commands {
     Install {
         ///name of package to install, defults to latest release, to specify
         ///version add @V:[version] after package name, e.g. `locate_zahirs_dad@V:[1.0.1]`
-        package: String
+        package: String,
+
+        #[arg(short, long)]
+        path: Option<PathBuf>,
     },
-    
+
     ///publish a package to gpm
     Publish {
         ///manifest.toml
@@ -33,16 +36,16 @@ enum Commands {
         ///file/files to publish
         #[clap(long)]
         files: PathBuf,
-    }
+    },
 }
 
 fn main() {
     let args = Args::parse();
-     
+
     match &args.cmd {
-        Commands::Install { package } => {
-            install::install(package)
-        },
+        Commands::Install { package, path } => {
+            install::install(package, path.as_deref()) //TODO: specify file path
+        }
         Commands::Publish { manifest, files } => {}
     }
 }
