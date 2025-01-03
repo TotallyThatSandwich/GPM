@@ -1,29 +1,45 @@
-name: main
-run-name: ${{ gitea.actor }} is running tests
-on: [push]
+name: CI
 
-env:
-  CARGO_TERM_COLOR: always
+# This workflow run tests and build for each push
 
-jobs:
-  build_and_test:
-    name: Rust project
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+on:
+  push:
+      branches:
+            - main
+                  - 'feature-**'
 
-      - uses: Swatinem/rust-cache@v2
+                  jobs:
 
-      - name: setup toolchain
-        uses: hecrj/setup-rust-action@v1
-        with:
-          rust-version: stable
+                    test_phaser:
+                        runs-on: ubuntu-latest
+                            steps:
+                                  - uses: actions/checkout@v2
 
-      - name: cargo test
-        run: cargo test --all-features
+                                        - name: Update local toolchain
+                                                run: |
+                                                          rustup update
+                                                                    rustup component add clippy
+                                                                              rustup install nightly          
 
-      - name: rustfmt
-        run: cargo fmt --all -- --check
+                                                                                    - name: Toolchain info
+                                                                                            run: |
+                                                                                                      cargo --version --verbose
+                                                                                                                rustc --version
+                                                                                                                          cargo clippy --version          
 
-      - name: clippy
-        run: cargo clippy --all --all-features --tests -- -D warnings
+                                                                                                                                - name: Lint
+                                                                                                                                        run: |
+                                                                                                                                                  cd phaser
+                                                                                                                                                            cargo fmt -- --check
+                                                                                                                                                                      cargo clippy -- -D warnings          
+
+                                                                                                                                                                            - name: Test
+                                                                                                                                                                                    run: |
+                                                                                                                                                                                              cd phaser
+                                                                                                                                                                                                        cargo check
+                                                                                                                                                                                                                  cargo test --all          
+
+                                                                                                                                                                                                                        - name: Build
+                                                                                                                                                                                                                                run: |
+                                                                                                                                                                                                                                          cd phaser
+                                                                                                                                                                                                                                                    cargo build --release    
