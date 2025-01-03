@@ -15,7 +15,7 @@ GPM is a basic package manager built in rust designed for distribuitng internal 
 
 [GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/)
 
-## Authors
+## Creators
 
 - [@ThatSandwich](https://www.github.com/TotallyThatSandwich)
 - [@GCGS-l4k5](https://www.github.com/GCGS-l4k5)
